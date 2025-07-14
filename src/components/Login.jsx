@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,11 +7,22 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // TODO: Add login API call here
-    console.log({ email, password });
-  };
+const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.post("https://tinycarebackend-ubpd.onrender.com/api/auth/login", {
+      email,
+      password,
+    });
+    localStorage.setItem("token", res.data.token);
+    navigate("/dashboard"); // or your actual route
+  } catch (err) {
+    console.error("Login failed:", err.response?.data || err.message);
+    alert("Login failed. Please check credentials.");
+  }
+  console.log({ email, password });
+};
+
 
   return (
     <div className="flex-1 flex items-center justify-center bg-pink-50 px-4">
