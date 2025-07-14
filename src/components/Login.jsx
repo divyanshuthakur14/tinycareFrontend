@@ -10,7 +10,7 @@ const Login = () => {
 const handleLogin = async (e) => {
   e.preventDefault();
   try {
-    const res = await axios.post("https://tinycarebackend-ubpd.onrender.com/api/auth/login", {
+    const res = await axios.post("https://tinycarebackend-ubpd.onrender.com/api/users/login", {
       email,
       password,
     });
