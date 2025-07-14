@@ -1,25 +1,53 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../api/axiosInstance";
 
-const Login = () => {
+const Signup = () => {
   const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+
+  const register = async (e) => {
     e.preventDefault();
-    // TODO: Add login API call here
-    console.log({ email, password });
+
+    try {
+      await axios.post("/api/users", {
+        name,
+        email,
+        password,
+        role: "USER",
+      });
+      alert("Signup successful!");
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+      alert("Signup failed");
+    }
   };
 
   return (
     <div className="flex-1 flex items-center justify-center bg-pink-50 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
         <h2 className="text-3xl font-bold text-pink-600 text-center mb-6">
-          Welcome Back 👶
+          Join TinyCare 👼
         </h2>
 
-        <form onSubmit={handleLogin} className="space-y-5">
+        <form onSubmit={register} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
+            <input
+              type="text"
+              className="w-full mt-1 px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Email
@@ -46,21 +74,23 @@ const Login = () => {
             />
           </div>
 
+
+
           <button
             type="submit"
             className="w-full bg-pink-500 text-white py-2 rounded-xl hover:bg-pink-600 transition"
           >
-            Login
+            Sign Up
           </button>
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-600">
-          Don’t have an account?{" "}
+          Already have an account?{" "}
           <button
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/login")}
             className="text-pink-500 hover:underline"
           >
-            Sign up
+            Login
           </button>
         </p>
       </div>
@@ -68,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
