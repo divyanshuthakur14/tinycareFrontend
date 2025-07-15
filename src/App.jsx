@@ -24,6 +24,7 @@ function App() {
             path="/appointments"
             element={isLoggedIn() ? <AppointmentRequests /> : <Login />}
           />
+          <Route path="/admin/users" element={<AllUsers />} />
         </Routes>
       </BrowserRouter>
     </div>

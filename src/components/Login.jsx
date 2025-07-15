@@ -14,14 +14,27 @@ const handleLogin = async (e) => {
       email,
       password,
     });
-    localStorage.setItem("token", res.data.token);
-    navigate("/dashboard"); // or your actual route
+
+    const token = res.data.token;
+    localStorage.setItem("token", token);
+
+    // ✅ Get user info to fetch the role
+    const userRes = await axios.get("https://tinycarebackend-ubpd.onrender.com/api/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    localStorage.setItem("role", userRes.data.role); // e.g., 'ADMIN' or 'USER'
+
+    navigate("/dashboard"); // or redirect wherever needed
   } catch (err) {
     console.error("Login failed:", err.response?.data || err.message);
     alert("Login failed. Please check credentials.");
   }
   console.log({ email, password });
 };
+
 
 
   return (
